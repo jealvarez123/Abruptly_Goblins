@@ -54,7 +54,7 @@ def calculate_availability(gamers_list, available_frequency):
 
 
 calculate_availability(gamers, count_availability)
-print(count_availability)
+
 
 # this finds the best day with most gamers by going through each day and comparing num of each
 def find_best_night(availability_table):
@@ -65,13 +65,40 @@ def find_best_night(availability_table):
             best_availability = availability
     return best_night
 
+
 game_night = find_best_night(count_availability)
 
-print(game_night)
 
 def available_on_night(gamers_list, day):
     return [gamer for gamer in gamers_list if day in gamer['availability']]
 
+
 attending_game_night = available_on_night(gamers, game_night)
 
-print(attending_game_night)
+form_email = """
+Dear {name}
+
+The Sorcery Society is happy to host "{game}" night and wishes you will attend. Come by on {day_of_week} and have a blast!
+
+Magically Yours,
+the Sorcery Society
+
+"""
+
+
+# creating an automated email sent to gamers
+def send_email(gamers_who_can_attend, day, game):
+    for gamer in gamers_who_can_attend:
+        print(form_email.format(name=gamer['name'], day_of_week=day, game=game))
+
+
+send_email(attending_game_night, game_night, "Abruptly Goblins!")
+
+
+unable_to_attend_best_night = [gamer for gamer in gamers if game_night not in gamer['availability']]
+second_night_availability = build_daily_frequency_table()
+calculate_availability(unable_to_attend_best_night, second_night_availability)
+second_night = find_best_night(second_night_availability)
+
+available_second_game_night = available_on_night(gamers, second_night)
+send_email(available_second_game_night, second_night, "Abruptly Goblins!")

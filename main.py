@@ -68,3 +68,10 @@ def find_best_night(availability_table):
 game_night = find_best_night(count_availability)
 
 print(game_night)
+
+def available_on_night(gamers_list, day):
+    return [gamer for gamer in gamers_list if day in gamer['availability']]
+
+attending_game_night = available_on_night(gamers, game_night)
+
+print(attending_game_night)
